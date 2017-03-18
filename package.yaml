@@ -1,0 +1,28 @@
+name: java-apache-lucene
+version: 0.1.0
+
+custom-setup:
+  dependencies:
+    - Cabal > 1.18
+    - base >= 4.9 && < 5
+    - inline-java
+
+ghc-options: -Wall
+
+default-extensions:
+  - DataKinds
+  - FlexibleContexts
+  - FlexibleInstances
+  - OverloadedStrings
+  - PatternSynonyms
+  - MultiParamTypeClasses
+  - TypeSynonymInstances
+  - TypeFamilies
+
+library:
+  source-dirs: src
+  dependencies:
+    - base >= 4.9 && < 5
+    - java-platform
+    - jvm-extra
+    - text

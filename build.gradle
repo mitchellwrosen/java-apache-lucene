@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  compile "org.apache.lucene:lucene-core:6.4.2"
+}
+
+task printClasspath {
+  doLast {
+    println sourceSets.main.compileClasspath.getAsPath()
+  }
+}

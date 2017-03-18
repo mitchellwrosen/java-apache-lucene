@@ -1,0 +1,24 @@
+name: java-platform
+version: 0.1.0
+
+ghc-options: -Wall
+
+default-extensions:
+  - DataKinds
+  - FlexibleContexts
+  - FlexibleInstances
+  - InstanceSigs
+  - MultiParamTypeClasses
+  - OverloadedStrings
+  - TypeFamilies
+  - TypeOperators
+
+library:
+  source-dirs: src
+  dependencies:
+    - base
+    - constraints
+    - jni
+    - jvm-extra
+    - singletons
+    - text

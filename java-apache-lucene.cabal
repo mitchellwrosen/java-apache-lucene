@@ -1,0 +1,34 @@
+-- This file has been generated from package.yaml by hpack version 0.17.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           java-apache-lucene
+version:        0.1.0
+build-type:     Custom
+cabal-version:  >= 1.10
+
+custom-setup
+  setup-depends:
+      Cabal > 1.18
+    , base >= 4.9 && < 5
+    , inline-java
+
+library
+  hs-source-dirs:
+      src
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances OverloadedStrings PatternSynonyms MultiParamTypeClasses TypeSynonymInstances TypeFamilies
+  ghc-options: -Wall
+  build-depends:
+      base >= 4.9 && < 5
+    , java-platform
+    , jvm-extra
+    , text
+  exposed-modules:
+      Lucene.Index.Term
+      Lucene.Search.BooleanClause
+      Lucene.Search.BooleanClause.Occur
+      Lucene.Search.BooleanQuery
+      Lucene.Search.BooleanQuery.Builder
+      Lucene.Search.Query
+      Lucene.Search.TermQuery
+  default-language: Haskell2010

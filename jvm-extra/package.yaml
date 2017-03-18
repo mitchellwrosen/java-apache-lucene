@@ -1,0 +1,19 @@
+name: jvm-extra
+version: 0.1.0
+
+ghc-options: -Wall
+
+default-extensions:
+  - DataKinds
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - MultiParamTypeClasses
+
+library:
+  source-dirs: src
+  dependencies:
+    - base
+    - constraints
+    - jni
+    - jvm

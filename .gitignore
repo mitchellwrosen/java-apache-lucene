@@ -1,0 +1,4 @@
+.gradle/
+.stack-work/
+build/
+codex.tags

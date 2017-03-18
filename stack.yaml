@@ -1,0 +1,15 @@
+resolver: lts-8.5
+packages:
+  - .
+  - java-platform
+  - jvm-extra
+
+  # Necessary for 'getStaticField'
+  - location:
+      git: git@github.com:mitchellwrosen/inline-java.git
+      commit: '0c3fb81'
+    subdirs:
+      - .
+      - jni
+      - jvm
+    extra-dep: True
