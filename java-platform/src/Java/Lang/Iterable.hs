@@ -1,5 +1,7 @@
 -- | https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html
 
+{-# language UndecidableInstances #-}
+
 module Java.Lang.Iterable where
 
 import Java.Util.Iterator (JIterator)
@@ -12,11 +14,18 @@ import Data.Constraint.Lifting (Lifting, lifting)
 type T a
   = 'Generic ('Iface "java.lang.Iterable") '[a]
 
+-- | https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html
 newtype JIterable a
-  = JIterable (J (T (JTy a)))
+  = JIterable (J (T (Interp a)))
 
-instance Lifting JReference JIterable where
-  lifting :: JReference a :- JReference (JIterable a)
+type instance Interp (JIterable a) = T (Interp a)
+
+instance (Reference a, b ~ T (Interp a)) => Coercible (JIterable a) b
+
+instance Reference a => Reference (JIterable a)
+
+instance Lifting Reference JIterable where
+  lifting :: Reference a :- Reference (JIterable a)
   lifting = Sub Dict
 
 forEach

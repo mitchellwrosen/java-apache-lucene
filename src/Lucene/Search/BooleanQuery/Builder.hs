@@ -1,7 +1,7 @@
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/BooleanQuery.Builder.html
 
 module Lucene.Search.BooleanQuery.Builder
-  ( JBooleanQueryBuilder(..)
+  ( JBooleanQueryBuilder
   , new
   , add
   , build
@@ -14,16 +14,10 @@ import Lucene.Search.BooleanClause.Occur
 
 import qualified Language.Java.Extra as Java
 
-type T
-  = 'Class "org.apache.lucene.search.BooleanQuery$Builder"
+type JBooleanQueryBuilder
+  = J ('Class "org.apache.lucene.search.BooleanQuery$Builder")
 
-newtype JBooleanQueryBuilder
-  = JBooleanQueryBuilder (J T)
-
-instance Coercible JBooleanQueryBuilder T
-
-instance JReference JBooleanQueryBuilder where
-  type JTy JBooleanQueryBuilder = T
+instance Reference JBooleanQueryBuilder
 
 instance Subclass JBooleanQueryBuilder where
   type Super JBooleanQueryBuilder = JObject
@@ -33,10 +27,10 @@ new = Java.new []
 
 add
   :: Extends query JQuery
-  => JBooleanQueryBuilder  -> query -> JBooleanClauseOccur
+  => JBooleanQueryBuilder -> query -> JBooleanClauseOccur
   -> IO JBooleanQueryBuilder
-add builder query occur =
-  call builder "add" [coerce (upcast query :: JQuery), coerce occur]
+add self query occur =
+  call self "add" [jvalue (upcast query :: JQuery), jvalue occur]
 
 build :: JBooleanQueryBuilder -> IO JBooleanQuery
-build builder = call builder "build" []
+build self = call self "build" []

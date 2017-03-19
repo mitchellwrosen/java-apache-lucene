@@ -1,9 +1,7 @@
-{-# language DefaultSignatures      #-}
-{-# language TypeFamilyDependencies #-}
-{-# language UndecidableInstances   #-}
+{-# language UndecidableInstances #-}
 
 module Language.Java.Extra
-  ( JReference(..)
+  ( Reference
   , Subclass
   , Super
   , super
@@ -20,40 +18,54 @@ import Unsafe.Coerce (unsafeCoerce)
 
 import qualified Data.Coerce as Coerce
 
-class ( Coerce.Coercible a (J (JTy a))
-      , Coercible a (JTy a)
-      , IsReferenceType (JTy a)
-      ) => JReference a where
-  type JTy a = (b :: JType) | b -> a
+-- | A 'Reference' is little more than a 'J' indexed by an 'IsReferenceType'
+-- type (or a newtype wrapper around such a thing).
+--
+-- However, it exists as its own empty typeclass (rather than a type alias)
+-- because it's partially applied in the 'Implements1' class.
+class ( Coerce.Coercible a (J (Interp a))
+      , Coercible a (Interp a)
+      , IsReferenceType (Interp a)
+      ) => Reference a where
 
-instance JReference JObject where
-  type JTy JObject = 'Class "java.lang.Object"
+instance Reference JObject
 
-class (JReference a, JReference (Super a)) => Subclass a where
+-- | A 'Subclass' is any 'Reference' that is not 'JObject'.
+class (Reference a, Reference (Super a)) => Subclass a where
   type Super a
 
   super :: a -> Super a
   super = unsafeCoerce
 
-class Extends a b where
+-- | Class inheritance: @A is-a B@, either tautologically (@A = B@), directly
+-- (@A extends B@), or indirectly (@A is-a Z@, @Z extends B@).
+--
+-- No additional instances should be added.
+class (Reference a, Reference b) => Extends a b where
   upcast :: a -> b
   upcast = unsafeCoerce
 
-instance Extends a a
+-- | @A is-a A@.
+instance Reference a => Extends a a
 
-instance {-# OVERLAPPABLE #-} Extends (Super a) b => Extends a b
-
-class (JReference a, JReference b) => Implements a b
-
+-- | If @A extends B@ and @B is-a C@, then @A is-a C@.
 instance {-# OVERLAPPABLE #-}
-  (JReference a, JReference b, Implements (Super a) b)
+  (Extends (Super a) b, Reference a, Reference b)
+    => Extends a b
+
+-- | @A implements B@.
+class (Reference a, Reference b) => Implements a b
+
+-- | If @A extends B@ and @B implements C@, then @A implements C@.
+instance {-# OVERLAPPABLE #-}
+  (Implements (Super a) b, Reference a, Reference b)
     => Implements a b
 
-class (JReference a, JReference c, Lifting JReference b)
+-- | @A implements B<C>@.
+class (Reference a, Reference c, Lifting Reference b)
   => Implements1 a b c | a b -> c
 
-instance (JReference (f a), Lifting JReference f) => Implements1 (f a) f a
-
+-- | If @A extends B@ and @B implements C<D>@, then @A implements C<D>@.
 instance {-# OVERLAPPABLE #-}
-  (JReference a, JReference c, Lifting JReference b, Implements1 (Super a) b c)
+  (Reference a, Reference c, Lifting Reference b, Implements1 (Super a) b c)
     => Implements1 a b c

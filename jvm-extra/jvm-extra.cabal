@@ -10,7 +10,7 @@ cabal-version:  >= 1.10
 library
   hs-source-dirs:
       src
-  default-extensions: DataKinds FlexibleContexts FlexibleInstances FunctionalDependencies MultiParamTypeClasses
+  default-extensions: DataKinds FlexibleContexts FlexibleInstances FunctionalDependencies MultiParamTypeClasses TypeFamilies
   ghc-options: -Wall
   build-depends:
       base

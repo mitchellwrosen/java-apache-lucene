@@ -1,6 +1,7 @@
 -- | https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html
 
-{-# language ScopedTypeVariables #-}
+{-# language ScopedTypeVariables  #-}
+{-# language UndecidableInstances #-}
 
 module Java.Lang.Comparable
   ( JComparable(..)
@@ -20,14 +21,20 @@ type T a
   = 'Generic ('Iface "java.lang.Comparable") '[a]
 
 newtype JComparable a
-  = JComparable (J (T (JTy a)))
+  = JComparable (J (T (Interp a)))
 
-instance Lifting JReference JComparable where
-  lifting :: JReference a :- JReference (JComparable a)
+type instance Interp (JComparable a) = T (Interp a)
+
+instance (Reference a, b ~ T (Interp a)) => Coercible (JComparable a) b
+
+instance Reference a => Reference (JComparable a)
+
+instance Lifting Reference JComparable where
+  lifting :: Reference a :- Reference (JComparable a)
   lifting = Sub Dict
 
 compareTo :: forall a b. Implements1 a JComparable b => a -> b -> IO Int32
-compareTo x y = call x "compareTo" [coerce (JNI.upcast y')]
+compareTo self x = call self "compareTo" [jvalue (JNI.upcast x')]
  where
-  y' :: J (JTy b)
-  y' = Coerce.coerce y
+  x' :: J (Interp b)
+  x' = Coerce.coerce x

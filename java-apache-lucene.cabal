@@ -25,10 +25,17 @@ library
     , text
   exposed-modules:
       Lucene.Index.Term
+      Lucene.Search.AutomatonQuery
       Lucene.Search.BooleanClause
       Lucene.Search.BooleanClause.Occur
       Lucene.Search.BooleanQuery
       Lucene.Search.BooleanQuery.Builder
+      Lucene.Search.FuzzyQuery
+      Lucene.Search.MultiTermQuery
+      Lucene.Search.PhraseQuery
+      Lucene.Search.PhraseQuery.Builder
+      Lucene.Search.PrefixQuery
       Lucene.Search.Query
       Lucene.Search.TermQuery
+      Lucene.Search.WildcardQuery
   default-language: Haskell2010

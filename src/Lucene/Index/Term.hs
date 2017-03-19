@@ -1,7 +1,7 @@
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/index/Term.html
 
 module Lucene.Index.Term
-  ( JTerm(..)
+  ( JTerm
   , new
   ) where
 
@@ -11,17 +11,11 @@ import qualified Language.Java.Extra as Java
 
 import Data.Text (Text)
 
-type T
-  = 'Class "org.apache.lucene.index.Term"
-
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/index/Term.html
-newtype JTerm
-  = JTerm (J T)
+type JTerm
+  = J ('Class "org.apache.lucene.index.Term")
 
-instance Coercible JTerm T
-
-instance JReference JTerm where
-  type JTy JTerm = T
+instance Reference JTerm
 
 instance Subclass JTerm where
   type Super JTerm = JObject
@@ -31,4 +25,4 @@ new :: Text -> Text -> IO JTerm
 new field text = do
   field' <- reflect field
   text'  <- reflect text
-  Java.new [coerce field', coerce text']
+  Java.new [jvalue field', jvalue text']

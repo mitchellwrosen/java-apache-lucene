@@ -20,27 +20,28 @@ type T a
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html
 newtype JIterator a
-  = JIterator (J (T (JTy a)))
+  = JIterator (J (T (Interp a)))
 
-instance (JReference a, b ~ T (JTy a)) => Coercible (JIterator a) b
+type instance Interp (JIterator a) = T (Interp a)
 
-instance JReference a => JReference (JIterator a) where
-  type JTy (JIterator a) = T (JTy a)
+instance (Reference a, b ~ T (Interp a)) => Coercible (JIterator a) b
 
-instance Lifting JReference JIterator where
-  lifting :: JReference a :- JReference (JIterator a)
+instance Reference a => Reference (JIterator a)
+
+instance Lifting Reference JIterator where
+  lifting :: Reference a :- Reference (JIterator a)
   lifting = Sub Dict
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#hasNext--
 hasNext :: Implements1 a JIterator b => a -> IO Bool
-hasNext iter = call iter "hasNext" []
+hasNext self = call self "hasNext" []
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#next--
 next :: Implements1 a JIterator b => a -> IO b
-next iter = do
-  result :: JObject <- call iter "next" []
+next self = do
+  result :: JObject <- call self "next" []
   pure (unsafeCoerce result)
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#remove--
 remove :: Implements1 a JIterator b => a -> IO ()
-remove iter = call iter "remove" []
+remove self = call self "remove" []

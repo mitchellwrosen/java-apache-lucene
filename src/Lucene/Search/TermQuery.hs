@@ -9,16 +9,11 @@ import qualified Language.Java.Extra as Java
 import Lucene.Index.Term (JTerm)
 import Lucene.Search.Query (JQuery)
 
-type T
-  = 'Class "org.apache.lucene.search.TermQuery"
+-- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/TermQuery.html
+type JTermQuery
+  = J ('Class "org.apache.lucene.search.TermQuery")
 
-newtype JTermQuery
-  = JTermQuery (J T)
-
-instance Coercible JTermQuery T
-
-instance JReference JTermQuery where
-  type JTy JTermQuery = T
+instance Reference JTermQuery
 
 instance Subclass JTermQuery where
   type Super JTermQuery = JQuery

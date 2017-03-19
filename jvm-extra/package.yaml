@@ -9,6 +9,7 @@ default-extensions:
   - FlexibleInstances
   - FunctionalDependencies
   - MultiParamTypeClasses
+  - TypeFamilies
 
 library:
   source-dirs: src
