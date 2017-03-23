@@ -21,14 +21,14 @@ newtype JEnum a
 
 type instance Interp (JEnum a) = T (Interp a)
 
-instance (Implements1 a JEnum a, b ~ T (Interp a)) => Coercible (JEnum a) b
+instance (Reference a, b ~ T (Interp a)) => Coercible (JEnum a) b
 
-instance (Implements1 a JEnum a) => Reference (JEnum a)
+instance (Reference a) => Reference (JEnum a)
 
 instance Lifting Reference JEnum where
   lifting = Sub Dict
 
-instance (Implements1 a JEnum a) => Subclass (JEnum a) where
+instance IsA1 a JEnum a => Subclass (JEnum a) where
   type Super (JEnum a) = JObject
 
-instance (Implements1 a JEnum a) => Implements1 (JEnum a) JComparable a
+instance IsA1 a JEnum a => IsA1 (JEnum a) JComparable a

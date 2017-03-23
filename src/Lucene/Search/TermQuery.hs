@@ -19,4 +19,4 @@ instance Subclass JTermQuery where
   type Super JTermQuery = JQuery
 
 new :: JTerm -> IO JTermQuery
-new term = Java.new [coerce term]
+new term = Java.new [jvalue term]

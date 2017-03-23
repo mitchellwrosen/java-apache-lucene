@@ -33,15 +33,15 @@ instance Lifting Reference JIterator where
   lifting = Sub Dict
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#hasNext--
-hasNext :: Implements1 a JIterator b => a -> IO Bool
+hasNext :: IsA1 self JIterator t => self -> IO Bool
 hasNext self = call self "hasNext" []
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#next--
-next :: Implements1 a JIterator b => a -> IO b
+next :: IsA1 self JIterator t => self -> IO t
 next self = do
   result :: JObject <- call self "next" []
   pure (unsafeCoerce result)
 
 -- | https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html#remove--
-remove :: Implements1 a JIterator b => a -> IO ()
+remove :: IsA1 self JIterator t => self -> IO ()
 remove self = call self "remove" []

@@ -1,5 +1,6 @@
 -- | https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html
 
+{-# language ScopedTypeVariables #-}
 {-# language UndecidableInstances #-}
 
 module Java.Lang.Iterable where
@@ -29,11 +30,11 @@ instance Lifting Reference JIterable where
   lifting = Sub Dict
 
 forEach
-  :: (Implements1 a JIterable b, Extends b c)
-  => a -> JConsumer c -> IO ()
-forEach iter consumer = call iter "forEach" [coerce consumer]
+  :: forall self consumer t u.
+     (IsA1 self JIterable t, IsA1 consumer JConsumer u, IsA t u)
+  => self -> consumer -> IO ()
+forEach self consumer =
+  call self "forEach" [jvalue (upcast1 consumer :: JConsumer u)]
 
-iterator
-  :: (Implements1 a JIterable b)
-  => a -> IO (JIterator b)
-iterator iter = call iter "iterator" []
+iterator :: IsA1 self JIterable t => self -> IO (JIterator t)
+iterator self = call self "iterator" []

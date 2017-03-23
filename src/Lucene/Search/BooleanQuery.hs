@@ -17,4 +17,4 @@ instance Reference JBooleanQuery
 instance Subclass JBooleanQuery where
   type Super JBooleanQuery = JQuery
 
-instance Implements1 JBooleanQuery JIterable JBooleanClause
+instance IsA1 JBooleanQuery JIterable JBooleanClause

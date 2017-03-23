@@ -17,12 +17,11 @@ library
   hs-source-dirs:
       src
   default-extensions: DataKinds FlexibleContexts FlexibleInstances OverloadedStrings PatternSynonyms MultiParamTypeClasses TypeSynonymInstances TypeFamilies
-  ghc-options: -Wall
+  ghc-options: -Wall -Wno-orphans
   build-depends:
       base >= 4.9 && < 5
     , java-platform
     , jvm-extra
-    , text
   exposed-modules:
       Lucene.Index.Term
       Lucene.Search.AutomatonQuery
@@ -31,11 +30,15 @@ library
       Lucene.Search.BooleanQuery
       Lucene.Search.BooleanQuery.Builder
       Lucene.Search.FuzzyQuery
+      Lucene.Search.MultiPhraseQuery
+      Lucene.Search.MultiPhraseQuery.Builder
       Lucene.Search.MultiTermQuery
       Lucene.Search.PhraseQuery
       Lucene.Search.PhraseQuery.Builder
       Lucene.Search.PrefixQuery
       Lucene.Search.Query
       Lucene.Search.TermQuery
+      Lucene.Search.TermRangeQuery
       Lucene.Search.WildcardQuery
+      Lucene.Util.BytesRef
   default-language: Haskell2010

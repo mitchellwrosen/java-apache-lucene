@@ -14,9 +14,6 @@ import Data.Constraint
 import Data.Constraint.Lifting (Lifting(lifting))
 import Data.Int (Int32)
 
-import qualified Data.Coerce as Coerce
-import qualified Foreign.JNI.Types as JNI
-
 type T a
   = 'Generic ('Iface "java.lang.Comparable") '[a]
 
@@ -33,8 +30,5 @@ instance Lifting Reference JComparable where
   lifting :: Reference a :- Reference (JComparable a)
   lifting = Sub Dict
 
-compareTo :: forall a b. Implements1 a JComparable b => a -> b -> IO Int32
-compareTo self x = call self "compareTo" [jvalue (JNI.upcast x')]
- where
-  x' :: J (Interp b)
-  x' = Coerce.coerce x
+compareTo :: IsA1 self JComparable t => self -> t -> IO Int32
+compareTo self x = call self "compareTo" [jvalue (objcast x)]

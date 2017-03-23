@@ -26,11 +26,11 @@ new :: IO JBooleanQueryBuilder
 new = Java.new []
 
 add
-  :: Extends query JQuery
-  => JBooleanQueryBuilder -> query -> JBooleanClauseOccur
+  :: (IsA query JQuery, IsA self JBooleanQueryBuilder)
+  => self -> query -> JBooleanClauseOccur
   -> IO JBooleanQueryBuilder
 add self query occur =
   call self "add" [jvalue (upcast query :: JQuery), jvalue occur]
 
-build :: JBooleanQueryBuilder -> IO JBooleanQuery
+build :: IsA self JBooleanQueryBuilder => self -> IO JBooleanQuery
 build self = call self "build" []

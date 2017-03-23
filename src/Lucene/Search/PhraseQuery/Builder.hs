@@ -30,13 +30,15 @@ new :: IO JPhraseQueryBuilder
 new = Java.new []
 
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/PhraseQuery.Builder.html#add-org.apache.lucene.index.Term-
-add :: JPhraseQueryBuilder -> JTerm -> IO JPhraseQueryBuilder
+add :: IsA self JPhraseQueryBuilder => self -> JTerm -> IO JPhraseQueryBuilder
 add self term = call self "add" [jvalue term]
 
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/PhraseQuery.Builder.html#add-org.apache.lucene.index.Term-int-
-add2 :: JPhraseQueryBuilder -> JTerm -> Int32 -> IO JPhraseQueryBuilder
+add2
+  :: IsA self JPhraseQueryBuilder
+  => self -> JTerm -> Int32 -> IO JPhraseQueryBuilder
 add2 self term i = call self "add" [jvalue term, jvalue i]
 
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/PhraseQuery.Builder.html#build--
-build :: JPhraseQueryBuilder -> IO JPhraseQuery
+build :: IsA self JPhraseQueryBuilder => self -> IO JPhraseQuery
 build self = call self "build" []

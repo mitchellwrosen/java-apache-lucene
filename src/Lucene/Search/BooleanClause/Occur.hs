@@ -1,7 +1,7 @@
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/BooleanClause.Occur.html
 
 module Lucene.Search.BooleanClause.Occur
-  ( JBooleanClauseOccur(..)
+  ( JBooleanClauseOccur
   , pattern FILTER
   , pattern MUST
   , pattern MUST_NOT
@@ -23,9 +23,9 @@ instance Reference JBooleanClauseOccur
 instance Subclass JBooleanClauseOccur where
   type Super JBooleanClauseOccur = JEnum JBooleanClauseOccur
 
-instance Implements JBooleanClauseOccur JSerializable
+instance IsA JBooleanClauseOccur JSerializable
 
-instance Implements1 JBooleanClauseOccur JComparable JBooleanClauseOccur
+instance IsA1 JBooleanClauseOccur JComparable JBooleanClauseOccur
 
 -- | http://lucene.apache.org/core/6_4_2/core/org/apache/lucene/search/BooleanClause.Occur.html#FILTER
 pattern FILTER :: JBooleanClauseOccur

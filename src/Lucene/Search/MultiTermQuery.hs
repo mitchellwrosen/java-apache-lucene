@@ -7,7 +7,6 @@ module Lucene.Search.MultiTermQuery
 
 import Lucene.Search.Query (JQuery)
 
-import Data.Text (Text)
 import Language.Java.Extra hiding (new)
 
 import qualified Language.Java.Extra as Java
@@ -21,7 +20,5 @@ instance Reference JMultiTermQuery
 instance Subclass JMultiTermQuery where
   type Super JMultiTermQuery = JQuery
 
-new :: Text -> IO JMultiTermQuery
-new field = do
-  field' <- reflect field
-  Java.new [coerce field']
+new :: JString -> IO JMultiTermQuery
+new field = Java.new [jvalue field]

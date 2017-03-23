@@ -21,6 +21,7 @@ library
     , text
   exposed-modules:
       Java.IO.Serializable
+      Java.Lang.Cloneable
       Java.Lang.Comparable
       Java.Lang.Enum
       Java.Lang.Iterable
